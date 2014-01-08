@@ -20,6 +20,36 @@ Begin VB.Form frm_NewOS
       TabIndex        =   31
       Top             =   2400
       Width           =   4455
+      Begin VB.TextBox txt_width 
+         Height          =   315
+         Left            =   1200
+         TabIndex        =   34
+         Top             =   240
+         Width           =   1335
+      End
+      Begin VB.TextBox txt_height 
+         Height          =   315
+         Left            =   1200
+         TabIndex        =   33
+         Top             =   600
+         Width           =   1335
+      End
+      Begin VB.Label Label13 
+         Caption         =   "Artura"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   35
+         Top             =   720
+         Width           =   975
+      End
+      Begin VB.Label Label12 
+         Caption         =   "Largura"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   32
+         Top             =   360
+         Width           =   975
+      End
    End
    Begin VB.TextBox Text4 
       Height          =   315
@@ -45,10 +75,10 @@ Begin VB.Form frm_NewOS
    Begin VB.CommandButton Command1 
       Caption         =   "Gerar OS"
       Height          =   375
-      Left            =   7920
+      Left            =   8520
       TabIndex        =   21
       Top             =   7920
-      Width           =   1815
+      Width           =   1575
    End
    Begin VB.Frame frme_usedMaterial 
       Caption         =   "Material usado"
@@ -226,10 +256,10 @@ Begin VB.Form frm_NewOS
    Begin VB.CommandButton bt_Cancel 
       Caption         =   "Cancelar"
       Height          =   375
-      Left            =   9840
+      Left            =   10200
       TabIndex        =   0
       Top             =   7920
-      Width           =   1935
+      Width           =   1575
    End
    Begin VB.Label Label10 
       Caption         =   "Funcionário responsável"
@@ -286,6 +316,11 @@ Attribute opt_acrylic.VB_VarHelpID = -1
 Dim WithEvents opt_styrofoam As OptionButton
 Attribute opt_styrofoam.VB_VarHelpID = -1
 
+Dim lb_espessure As Label
+Dim txt_espessure As TextBox
+
+
+
 Private Sub bt_Cancel_Click()
     Unload Me
 End Sub
@@ -300,9 +335,12 @@ Private Sub opt_digitalPrint_Click()
         Me.Controls.Remove opt_mdf
         Me.Controls.Remove opt_acrylic
         Me.Controls.Remove opt_styrofoam
+        
+        Me.Controls.Remove lb_espessure
+        Me.Controls.Remove txt_espessure
     'End If
 Skip:
-    
+'
     Set opt_canvas = Controls.Add("VB.OptionButton", "opt_canvas", frme_usedMaterial)
     With opt_canvas
         .Move 240, 360, 1000, 195
@@ -324,7 +362,7 @@ Skip:
         .Visible = True
     End With
     
-     Set opt_Clear = Controls.Add("VB.OptionButton", "opt_clear", frme_usedMaterial)
+    Set opt_Clear = Controls.Add("VB.OptionButton", "opt_clear", frme_usedMaterial)
     With opt_Clear
         .Move 240, (360 * 3), 1000, 195
         .Caption = "Clear"
@@ -334,44 +372,48 @@ Skip:
 End Sub
 
 Private Sub opt_plotterCut_Click()
-    On Error GoTo Skip
-    'If VarType(opt_canvas) = vbcontrol Then
+    On Error GoTo step1
         Me.Controls.Remove opt_canvas
         Me.Controls.Remove opt_adhesive
         Me.Controls.Remove opt_leaky
         Me.Controls.Remove opt_Clear
-    'End If
-Skip:
-    
-    Set opt_mdf = Controls.Add("VB.OptionButton", "opt_mdf", frme_usedMaterial)
-    With opt_mdf
-        .Move 240, 360, 1000, 195
-        .Caption = "MDF"
-        .Visible = True
-    End With
-    
-    Set opt_acrylic = Controls.Add("VB.OptionButton", "opt_acrylic", frme_usedMaterial)
-    With opt_acrylic
-        .Move 240, (360 * 2), 1000, 195
-        .Caption = "Acrílico"
-        .Visible = True
-    End With
-    
-    Set opt_styrofoam = Controls.Add("VB.OptionButton", "opt_styrofoam", frme_usedMaterial)
-    With opt_styrofoam
-        .Move 240, (360 * 3), 1000, 195
-        .Caption = "Isopor"
-        .Visible = True
-    End With
+
+step1:
+    On Error GoTo step2
+        Me.Controls.Remove lb_espessure
+        Me.Controls.Remove txt_espessure
+
+step2:
+      Set opt_mdf = Controls.Add("VB.OptionButton", "opt_mdf", frme_usedMaterial)
+      With opt_mdf
+          .Move 240, 360, 1000, 195
+          .Caption = "MDF"
+          .Visible = True
+      End With
+  
+      Set opt_acrylic = Controls.Add("VB.OptionButton", "opt_acrylic", frme_usedMaterial)
+      With opt_acrylic
+          .Move 240, (360 * 2), 1000, 195
+          .Caption = "Acrílico"
+          .Visible = True
+      End With
+
+      Set opt_styrofoam = Controls.Add("VB.OptionButton", "opt_styrofoam", frme_usedMaterial)
+      With opt_styrofoam
+          .Move 240, (360 * 3), 1000, 195
+          .Caption = "Isopor"
+          .Visible = True
+      End With
+   
 End Sub
 
 Private Sub opt_laserCut_Click()
     On Error GoTo step1
-    'If VarType(opt_canvas) = vbcontrol Then
         Me.Controls.Remove opt_canvas
         Me.Controls.Remove opt_adhesive
         Me.Controls.Remove opt_leaky
         Me.Controls.Remove opt_Clear
+
 step1:
     On Error GoTo step2
         Me.Controls.Remove opt_mdf
@@ -379,4 +421,16 @@ step1:
         Me.Controls.Remove opt_styrofoam
     'End If
 step2:
+    Set lb_espessure = Controls.Add("VB.Label", "lb_espessure", frme_dimensions)
+    With lb_espessure
+        .Move 240, 1080, 975, 255
+        .Visible = True
+        .Caption = "Espessura"
+    End With
+    
+    Set txt_espessure = Controls.Add("VB.TextBox", "txt_espessure", frme_dimensions)
+    With txt_espessure
+        .Move 1200, 960, 1335, 315
+        .Visible = True
+    End With
 End Sub
