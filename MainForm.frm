@@ -57,6 +57,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
 Private Sub bt_NewOS_Click()
     Me.Enabled = False
     frm_NewOS.Show

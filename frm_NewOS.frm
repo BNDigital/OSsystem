@@ -13,24 +13,32 @@ Begin VB.Form frm_NewOS
    ScaleHeight     =   8535
    ScaleWidth      =   12015
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Frame frme_dimensions 
+      Caption         =   "Dimensões"
+      Height          =   1455
+      Left            =   5400
+      TabIndex        =   31
+      Top             =   2400
+      Width           =   4455
+   End
    Begin VB.TextBox Text4 
       Height          =   315
       Left            =   2880
-      TabIndex        =   28
+      TabIndex        =   26
       Top             =   5520
       Width           =   2535
    End
    Begin VB.TextBox Text3 
       Height          =   315
       Left            =   240
-      TabIndex        =   26
+      TabIndex        =   24
       Top             =   5520
       Width           =   2535
    End
    Begin VB.TextBox Text2 
       Height          =   1695
       Left            =   240
-      TabIndex        =   24
+      TabIndex        =   22
       Top             =   6120
       Width           =   11535
    End
@@ -38,17 +46,17 @@ Begin VB.Form frm_NewOS
       Caption         =   "Gerar OS"
       Height          =   375
       Left            =   7920
-      TabIndex        =   23
+      TabIndex        =   21
       Top             =   7920
       Width           =   1815
    End
-   Begin VB.Frame Frame3 
+   Begin VB.Frame frme_usedMaterial 
       Caption         =   "Material usado"
       Height          =   1455
       Left            =   2280
-      TabIndex        =   22
+      TabIndex        =   20
       Top             =   2400
-      Width           =   7575
+      Width           =   3015
    End
    Begin VB.Frame Frame1 
       Caption         =   "Serviços prestado"
@@ -57,35 +65,35 @@ Begin VB.Form frm_NewOS
       TabIndex        =   18
       Top             =   2400
       Width           =   2055
-      Begin VB.OptionButton Option1 
-         Caption         =   "Impressão digital"
-         Height          =   375
+      Begin VB.OptionButton opt_laserCut 
+         Caption         =   "Corte a laser"
+         Height          =   195
          Left            =   240
          TabIndex        =   30
-         Top             =   360
-         Width           =   1695
-      End
-      Begin VB.CheckBox Check3 
-         Caption         =   "Corte a laser"
-         Height          =   255
-         Left            =   240
-         TabIndex        =   21
          Top             =   1080
-         Width           =   1575
+         Width           =   1455
       End
-      Begin VB.CheckBox Check2 
+      Begin VB.OptionButton opt_plotterCut 
          Caption         =   "Plotter de recorte"
-         Height          =   255
+         Height          =   195
          Left            =   240
-         TabIndex        =   20
+         TabIndex        =   29
          Top             =   720
          Width           =   1575
+      End
+      Begin VB.OptionButton opt_digitalPrint 
+         Caption         =   "Impressão digital"
+         Height          =   195
+         Left            =   240
+         TabIndex        =   28
+         Top             =   360
+         Width           =   1695
       End
       Begin VB.Label Label11 
          Height          =   255
          Left            =   240
          TabIndex        =   19
-         Top             =   1080
+         Top             =   960
          Width           =   975
       End
    End
@@ -99,7 +107,7 @@ Begin VB.Form frm_NewOS
       _ExtentY        =   556
       _Version        =   393216
       MaxLength       =   16
-      Mask            =   "99/99/9999 00:00"
+      Mask            =   "99/99/9999 99:99"
       PromptChar      =   "_"
    End
    Begin VB.Frame Frame2 
@@ -227,7 +235,7 @@ Begin VB.Form frm_NewOS
       Caption         =   "Funcionário responsável"
       Height          =   255
       Left            =   2880
-      TabIndex        =   29
+      TabIndex        =   27
       Top             =   5280
       Width           =   2535
    End
@@ -235,7 +243,7 @@ Begin VB.Form frm_NewOS
       Caption         =   "Solicitante"
       Height          =   255
       Left            =   240
-      TabIndex        =   27
+      TabIndex        =   25
       Top             =   5280
       Width           =   1575
    End
@@ -243,7 +251,7 @@ Begin VB.Form frm_NewOS
       Caption         =   "Observações"
       Height          =   255
       Left            =   240
-      TabIndex        =   25
+      TabIndex        =   23
       Top             =   5880
       Width           =   1095
    End
@@ -261,6 +269,23 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
+Dim WithEvents opt_canvas As OptionButton
+Attribute opt_canvas.VB_VarHelpID = -1
+Dim WithEvents opt_adhesive As OptionButton
+Attribute opt_adhesive.VB_VarHelpID = -1
+Dim WithEvents opt_leaky As OptionButton
+Attribute opt_leaky.VB_VarHelpID = -1
+Dim WithEvents opt_Clear As OptionButton
+Attribute opt_Clear.VB_VarHelpID = -1
+
+Dim WithEvents opt_mdf As OptionButton
+Attribute opt_mdf.VB_VarHelpID = -1
+Dim WithEvents opt_acrylic As OptionButton
+Attribute opt_acrylic.VB_VarHelpID = -1
+Dim WithEvents opt_styrofoam As OptionButton
+Attribute opt_styrofoam.VB_VarHelpID = -1
+
 Private Sub bt_Cancel_Click()
     Unload Me
 End Sub
@@ -269,3 +294,89 @@ Private Sub Form_Unload(Cancel As Integer)
     frm_OS.Enabled = True
 End Sub
 
+Private Sub opt_digitalPrint_Click()
+     On Error GoTo Skip
+    'If VarType(opt_canvas) = vbcontrol Then
+        Me.Controls.Remove opt_mdf
+        Me.Controls.Remove opt_acrylic
+        Me.Controls.Remove opt_styrofoam
+    'End If
+Skip:
+    
+    Set opt_canvas = Controls.Add("VB.OptionButton", "opt_canvas", frme_usedMaterial)
+    With opt_canvas
+        .Move 240, 360, 1000, 195
+        .Caption = "Lona"
+        .Visible = True
+    End With
+       
+    Set opt_adhesive = Controls.Add("VB.OptionButton", "opt_adhesive", frme_usedMaterial)
+    With opt_adhesive
+        .Move 240 + 1695, 360, 1000, 195
+        .Caption = "Adesivo"
+        .Visible = True
+    End With
+    
+    Set opt_leaky = Controls.Add("VB.OptionButton", "opt_leaky", frme_usedMaterial)
+    With opt_leaky
+        .Move 240, (360 * 2), 1000, 195
+        .Caption = "Furadinho"
+        .Visible = True
+    End With
+    
+     Set opt_Clear = Controls.Add("VB.OptionButton", "opt_clear", frme_usedMaterial)
+    With opt_Clear
+        .Move 240, (360 * 3), 1000, 195
+        .Caption = "Clear"
+        .Visible = True
+    End With
+     
+End Sub
+
+Private Sub opt_plotterCut_Click()
+    On Error GoTo Skip
+    'If VarType(opt_canvas) = vbcontrol Then
+        Me.Controls.Remove opt_canvas
+        Me.Controls.Remove opt_adhesive
+        Me.Controls.Remove opt_leaky
+        Me.Controls.Remove opt_Clear
+    'End If
+Skip:
+    
+    Set opt_mdf = Controls.Add("VB.OptionButton", "opt_mdf", frme_usedMaterial)
+    With opt_mdf
+        .Move 240, 360, 1000, 195
+        .Caption = "MDF"
+        .Visible = True
+    End With
+    
+    Set opt_acrylic = Controls.Add("VB.OptionButton", "opt_acrylic", frme_usedMaterial)
+    With opt_acrylic
+        .Move 240, (360 * 2), 1000, 195
+        .Caption = "Acrílico"
+        .Visible = True
+    End With
+    
+    Set opt_styrofoam = Controls.Add("VB.OptionButton", "opt_styrofoam", frme_usedMaterial)
+    With opt_styrofoam
+        .Move 240, (360 * 3), 1000, 195
+        .Caption = "Isopor"
+        .Visible = True
+    End With
+End Sub
+
+Private Sub opt_laserCut_Click()
+    On Error GoTo step1
+    'If VarType(opt_canvas) = vbcontrol Then
+        Me.Controls.Remove opt_canvas
+        Me.Controls.Remove opt_adhesive
+        Me.Controls.Remove opt_leaky
+        Me.Controls.Remove opt_Clear
+step1:
+    On Error GoTo step2
+        Me.Controls.Remove opt_mdf
+        Me.Controls.Remove opt_acrylic
+        Me.Controls.Remove opt_styrofoam
+    'End If
+step2:
+End Sub
