@@ -1,8 +1,9 @@
 VERSION 5.00
 Object = "{C932BA88-4374-101B-A56C-00AA003668DC}#1.1#0"; "MSMASK32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frm_NewOS 
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Nova Ordem de Serviï¿½o"
+   Caption         =   "Nova Ordem de Serviçoo"
    ClientHeight    =   8535
    ClientLeft      =   45
    ClientTop       =   330
@@ -13,13 +14,62 @@ Begin VB.Form frm_NewOS
    ScaleHeight     =   8535
    ScaleWidth      =   12015
    StartUpPosition =   2  'CenterScreen
+   Begin MSComDlg.CommonDialog cmd_dialog 
+      Left            =   11280
+      Top             =   5400
+      _ExtentX        =   847
+      _ExtentY        =   847
+      _Version        =   393216
+      DefaultExt      =   "jpg"
+      DialogTitle     =   "Abrir imagem"
+      Filter          =   "Arquivos de imagem (*.bmp; *.jpg) | *.bmp; *.jpg | Todos os arquivos (*.*) |  *.*"
+   End
+   Begin VB.Frame Frame3 
+      Caption         =   "Layout"
+      Height          =   3375
+      Left            =   8160
+      TabIndex        =   36
+      Top             =   2400
+      Width           =   3615
+      Begin VB.CommandButton bt_imageBrowser 
+         Caption         =   "..."
+         Height          =   315
+         Left            =   2880
+         TabIndex        =   38
+         Top             =   2880
+         Width           =   495
+      End
+      Begin VB.TextBox txt_imageBrowser 
+         Height          =   315
+         Left            =   240
+         TabIndex        =   37
+         Top             =   2880
+         Width           =   2655
+      End
+      Begin VB.Image img_imageBrowser 
+         Height          =   2415
+         Left            =   240
+         Stretch         =   -1  'True
+         Top             =   360
+         Width           =   3135
+      End
+      Begin VB.Image img_imageBG 
+         BorderStyle     =   1  'Fixed Single
+         Height          =   2415
+         Left            =   240
+         Picture         =   "frm_NewOS.frx":0000
+         Stretch         =   -1  'True
+         Top             =   360
+         Width           =   3135
+      End
+   End
    Begin VB.Frame frme_dimensions 
-      Caption         =   "Dimensï¿½es"
+      Caption         =   "Dimensões"
       Height          =   1455
       Left            =   5400
       TabIndex        =   31
       Top             =   2400
-      Width           =   4455
+      Width           =   2655
       Begin VB.TextBox txt_width 
          Height          =   315
          Left            =   1200
@@ -89,7 +139,7 @@ Begin VB.Form frm_NewOS
       Width           =   3015
    End
    Begin VB.Frame Frame1 
-      Caption         =   "Serviï¿½os prestado"
+      Caption         =   "Serviços prestado"
       Height          =   1455
       Left            =   120
       TabIndex        =   18
@@ -112,7 +162,7 @@ Begin VB.Form frm_NewOS
          Width           =   1575
       End
       Begin VB.OptionButton opt_digitalPrint 
-         Caption         =   "Impressï¿½o digital"
+         Caption         =   "Impressão digital"
          Height          =   195
          Left            =   240
          TabIndex        =   28
@@ -131,7 +181,7 @@ Begin VB.Form frm_NewOS
       Height          =   315
       Left            =   10320
       TabIndex        =   16
-      Top             =   480
+      Top             =   600
       Width           =   1455
       _ExtentX        =   2566
       _ExtentY        =   556
@@ -237,14 +287,14 @@ Begin VB.Form frm_NewOS
          Width           =   615
       End
       Begin VB.Label Label5 
-         Caption         =   "Endereï¿½o"
+         Caption         =   "Endereço"
          Height          =   255
          Left            =   120
          TabIndex        =   4
          Top             =   840
          Width           =   735
       End
-      Begin VB.Label Label1 
+      Begin VB.Label lb_name 
          Caption         =   "Nome"
          Height          =   255
          Left            =   120
@@ -262,7 +312,7 @@ Begin VB.Form frm_NewOS
       Width           =   1575
    End
    Begin VB.Label Label10 
-      Caption         =   "Funcionï¿½rio responsï¿½vel"
+      Caption         =   "Funcionário responsável"
       Height          =   255
       Left            =   2880
       TabIndex        =   27
@@ -278,7 +328,7 @@ Begin VB.Form frm_NewOS
       Width           =   1575
    End
    Begin VB.Label Label3 
-      Caption         =   "Observaï¿½ï¿½es"
+      Caption         =   "Observações"
       Height          =   255
       Left            =   240
       TabIndex        =   23
@@ -290,7 +340,7 @@ Begin VB.Form frm_NewOS
       Height          =   255
       Left            =   10320
       TabIndex        =   17
-      Top             =   240
+      Top             =   360
       Width           =   975
    End
 End
@@ -319,10 +369,27 @@ Attribute opt_styrofoam.VB_VarHelpID = -1
 Dim lb_espessure As Label
 Dim txt_espessure As TextBox
 
-
-
 Private Sub bt_Cancel_Click()
     Unload Me
+End Sub
+
+Private Sub bt_imageBrowser_Click()
+    cmd_dialog.ShowOpen
+    txt_imageBrowser = cmd_dialog.FileName
+    img_imageBrowser.Picture = LoadPicture(txt_imageBrowser.Text)
+    
+    If img_imageBrowser.Height < img_imageBrowser.Width Then
+'        MsgBox "Horizontal"
+        img_imageBrowser.Width = img_imagebg.Width
+        img_imageBrowser.Height = img_imageBrowser.Height / img_imageBrowser.Width * img_imagebg.Width
+    Else
+'        MsgBox "Vertical"
+        img_imageBrowser.Width = img_imageBrowser.Width / img_imageBrowser.Height * img_imagebg.Height
+        img_imageBrowser.Height = img_imagebg.Height
+    End If
+'    MsgBox "W: " & img_imageBrowser.Width & ",Wbg: " & img_imagebg.Width
+'    img_imageBrowser.Left = (img_imagebg.Width - img_imageBrowser.Width) / 2
+
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -392,7 +459,7 @@ Skip1:
       Set opt_acrylic = Controls.Add("VB.OptionButton", "opt_acrylic", frme_usedMaterial)
       With opt_acrylic
           .Move 240, (360 * 2), 1000, 195
-          .Caption = "Acrï¿½lico"
+          .Caption = "Acrílico"
           .Visible = True
       End With
 
