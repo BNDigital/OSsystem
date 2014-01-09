@@ -2,7 +2,7 @@ VERSION 5.00
 Object = "{C932BA88-4374-101B-A56C-00AA003668DC}#1.1#0"; "MSMASK32.OCX"
 Begin VB.Form frm_NewOS 
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Nova Ordem de Serviço"
+   Caption         =   "Nova Ordem de Serviï¿½o"
    ClientHeight    =   8535
    ClientLeft      =   45
    ClientTop       =   330
@@ -14,7 +14,7 @@ Begin VB.Form frm_NewOS
    ScaleWidth      =   12015
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame frme_dimensions 
-      Caption         =   "Dimensões"
+      Caption         =   "Dimensï¿½es"
       Height          =   1455
       Left            =   5400
       TabIndex        =   31
@@ -89,7 +89,7 @@ Begin VB.Form frm_NewOS
       Width           =   3015
    End
    Begin VB.Frame Frame1 
-      Caption         =   "Serviços prestado"
+      Caption         =   "Serviï¿½os prestado"
       Height          =   1455
       Left            =   120
       TabIndex        =   18
@@ -112,7 +112,7 @@ Begin VB.Form frm_NewOS
          Width           =   1575
       End
       Begin VB.OptionButton opt_digitalPrint 
-         Caption         =   "Impressão digital"
+         Caption         =   "Impressï¿½o digital"
          Height          =   195
          Left            =   240
          TabIndex        =   28
@@ -237,7 +237,7 @@ Begin VB.Form frm_NewOS
          Width           =   615
       End
       Begin VB.Label Label5 
-         Caption         =   "Endereço"
+         Caption         =   "Endereï¿½o"
          Height          =   255
          Left            =   120
          TabIndex        =   4
@@ -262,7 +262,7 @@ Begin VB.Form frm_NewOS
       Width           =   1575
    End
    Begin VB.Label Label10 
-      Caption         =   "Funcionário responsável"
+      Caption         =   "Funcionï¿½rio responsï¿½vel"
       Height          =   255
       Left            =   2880
       TabIndex        =   27
@@ -278,7 +278,7 @@ Begin VB.Form frm_NewOS
       Width           =   1575
    End
    Begin VB.Label Label3 
-      Caption         =   "Observações"
+      Caption         =   "Observaï¿½ï¿½es"
       Height          =   255
       Left            =   240
       TabIndex        =   23
@@ -331,14 +331,12 @@ End Sub
 
 Private Sub opt_digitalPrint_Click()
      On Error GoTo Skip
-    'If VarType(opt_canvas) = vbcontrol Then
         Me.Controls.Remove opt_mdf
         Me.Controls.Remove opt_acrylic
         Me.Controls.Remove opt_styrofoam
         
         Me.Controls.Remove lb_espessure
         Me.Controls.Remove txt_espessure
-    'End If
 Skip:
 '
     Set opt_canvas = Controls.Add("VB.OptionButton", "opt_canvas", frme_usedMaterial)
@@ -372,18 +370,18 @@ Skip:
 End Sub
 
 Private Sub opt_plotterCut_Click()
-    On Error GoTo step1
+    On Error GoTo Skip
         Me.Controls.Remove opt_canvas
         Me.Controls.Remove opt_adhesive
         Me.Controls.Remove opt_leaky
         Me.Controls.Remove opt_Clear
 
-step1:
-    On Error GoTo step2
+Skip:
+    On Error GoTo Skip1
         Me.Controls.Remove lb_espessure
         Me.Controls.Remove txt_espessure
 
-step2:
+Skip1:
       Set opt_mdf = Controls.Add("VB.OptionButton", "opt_mdf", frme_usedMaterial)
       With opt_mdf
           .Move 240, 360, 1000, 195
@@ -394,7 +392,7 @@ step2:
       Set opt_acrylic = Controls.Add("VB.OptionButton", "opt_acrylic", frme_usedMaterial)
       With opt_acrylic
           .Move 240, (360 * 2), 1000, 195
-          .Caption = "Acrílico"
+          .Caption = "Acrï¿½lico"
           .Visible = True
       End With
 
@@ -408,19 +406,18 @@ step2:
 End Sub
 
 Private Sub opt_laserCut_Click()
-    On Error GoTo step1
+    On Error GoTo Skip
         Me.Controls.Remove opt_canvas
         Me.Controls.Remove opt_adhesive
         Me.Controls.Remove opt_leaky
         Me.Controls.Remove opt_Clear
 
-step1:
-    On Error GoTo step2
+Skip:
+    On Error GoTo Skip1
         Me.Controls.Remove opt_mdf
         Me.Controls.Remove opt_acrylic
         Me.Controls.Remove opt_styrofoam
-    'End If
-step2:
+Skip1:
     Set lb_espessure = Controls.Add("VB.Label", "lb_espessure", frme_dimensions)
     With lb_espessure
         .Move 240, 1080, 975, 255
