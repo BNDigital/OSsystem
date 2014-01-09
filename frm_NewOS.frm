@@ -377,19 +377,9 @@ Private Sub bt_imageBrowser_Click()
     cmd_dialog.ShowOpen
     txt_imageBrowser = cmd_dialog.FileName
     img_imageBrowser.Picture = LoadPicture(txt_imageBrowser.Text)
+    img_imageBrowser.Width = img_imageBrowser.Height / img_imageBrowser.Width * img_imagebg.Width
+    img_imageBrowser.Left = img_imageBrowser.Left + ((img_imagebg.Width - img_imageBrowser.Width) / 2)
     
-    If img_imageBrowser.Height < img_imageBrowser.Width Then
-'        MsgBox "Horizontal"
-        img_imageBrowser.Width = img_imagebg.Width
-        img_imageBrowser.Height = img_imageBrowser.Height / img_imageBrowser.Width * img_imagebg.Width
-    Else
-'        MsgBox "Vertical"
-        img_imageBrowser.Width = img_imageBrowser.Width / img_imageBrowser.Height * img_imagebg.Height
-        img_imageBrowser.Height = img_imagebg.Height
-    End If
-'    MsgBox "W: " & img_imageBrowser.Width & ",Wbg: " & img_imagebg.Width
-'    img_imageBrowser.Left = (img_imagebg.Width - img_imageBrowser.Width) / 2
-
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
