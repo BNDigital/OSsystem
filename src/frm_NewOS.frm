@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{C932BA88-4374-101B-A56C-00AA003668DC}#1.1#0"; "MSMASK32.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "Comdlg32.ocx"
 Begin VB.Form frm_NewOS 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Nova Ordem de Serviçoo"
@@ -22,7 +22,6 @@ Begin VB.Form frm_NewOS
       _Version        =   393216
       DefaultExt      =   "jpg"
       DialogTitle     =   "Abrir imagem"
-      Filter          =   "Arquivos de imagem (*.bmp; *.jpg) | *.bmp; *.jpg | Todos os arquivos (*.*) |  *.*"
    End
    Begin VB.Frame Frame3 
       Caption         =   "Layout"
@@ -47,9 +46,9 @@ Begin VB.Form frm_NewOS
          Width           =   2655
       End
       Begin VB.Image img_imageBrowser 
+         BorderStyle     =   1  'Fixed Single
          Height          =   2415
          Left            =   240
-         Stretch         =   -1  'True
          Top             =   360
          Width           =   3135
       End
@@ -375,10 +374,23 @@ End Sub
 
 Private Sub bt_imageBrowser_Click()
     cmd_dialog.ShowOpen
-    txt_imageBrowser = cmd_dialog.FileName
-    img_imageBrowser.Picture = LoadPicture(txt_imageBrowser.Text)
-    img_imageBrowser.Width = img_imageBrowser.Height / img_imageBrowser.Width * img_imagebg.Width
-    img_imageBrowser.Left = img_imageBrowser.Left + ((img_imagebg.Width - img_imageBrowser.Width) / 2)
+    img_imageBrowser.Picture = LoadPicture(cmd_dialog.FileName)
+       img_imageBrowser.Stretch = False
+       Dim ratio As Double
+       ratio = img_imageBrowser.Width / img_imageBrowser.Height
+       If img_imageBrowser.Width > img_imageBrowser.Height Then
+        img_imageBrowser.Stretch = True
+        txt_imageBrowser = "Horizontal"
+        img_imageBrowser.Height = ratio * img_imageBG.Width
+        img_imageBrowser.Width = img_imageBG.Width
+        img_imageBrowser.Top = img_imageBG.Top + ((img_imageBG.Height - img_imageBrowser.Height) / 2)
+    Else
+        img_imageBrowser.Stretch = True
+        txt_imageBrowser = "Vertical"
+        img_imageBrowser.Width = ratio * img_imageBG.Height
+        img_imageBrowser.Height = img_imageBG.Height
+        img_imageBrowser.Left = img_imageBG.Left + ((img_imageBG.Width - img_imageBrowser.Width) / 2)
+    End If
     
 End Sub
 
@@ -395,7 +407,7 @@ Private Sub opt_digitalPrint_Click()
         Me.Controls.Remove lb_espessure
         Me.Controls.Remove txt_espessure
 Skip:
-'
+
     Set opt_canvas = Controls.Add("VB.OptionButton", "opt_canvas", frme_usedMaterial)
     With opt_canvas
         .Move 240, 360, 1000, 195
